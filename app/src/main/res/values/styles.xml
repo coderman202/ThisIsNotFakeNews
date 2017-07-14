@@ -1,0 +1,77 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
+    <style name="AppTheme.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="AppTheme.NavigationView">
+        <item name="android:textColorSecondary">@color/colorAccent</item>
+        <item name="android:textColorPrimary">@color/colorAccent</item>
+    </style>
+
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar"/>
+
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light"/>
+
+    <style name="NavBarHeaderStyle">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">@dimen/nav_bar_header_text_size</item>
+        <item name="android:padding">@dimen/nav_header_vertical_spacing</item>
+        <item name="android:textAppearance">@style/TextAppearance.AppCompat.Body1</item>
+    </style>
+
+    <style name="NavBarHeaderEditTextStyle">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:inputType">text</item>
+        <item name="android:padding">@dimen/nav_header_vertical_spacing</item>
+        <item name="android:drawableStart">@drawable/search</item>
+        <item name="android:textAppearance">@style/TextAppearance.AppCompat.Body1</item>
+    </style>
+
+    <style name="AuthorDateStyle" parent="TextAppearance.AppCompat.Body2">
+        <item name="android:textStyle">italic</item>
+        <item name="android:textColor">@color/author_date_text_color</item>
+    </style>
+
+    <style name="TitleStyle" parent="TextAppearance.AppCompat.Headline">
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/title_text_color</item>
+    </style>
+
+    <style name="SubtitleStyle" parent="TextAppearance.AppCompat.Subhead">
+        <item name="android:textStyle">normal</item>
+        <item name="android:textColor">@color/title_text_color</item>
+    </style>
+
+    <style name="ErrorTextStyle">
+        <item name="android:textColor">@color/author_date_text_color</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="android:textAlignment">center</item>
+        <item name="android:visibility">gone</item>
+    </style>
+
+    <style name="ReadMoreButtonStyle">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textAppearance">@style/TextAppearance.AppCompat.Caption</item>
+        <item name="android:background">@drawable/gradient_background_button</item>
+        <item name="android:textColor">@color/nav_text_color</item>
+        <item name="android:paddingEnd">@dimen/read_more_button_padding</item>
+        <item name="android:paddingStart">@dimen/read_more_button_padding</item>
+        <item name="android:gravity">center</item>
+    </style>
+
+</resources>

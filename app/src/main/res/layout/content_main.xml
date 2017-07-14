@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="com.example.android.thisisnotfakenews.MainActivity"
+    tools:showIn="@layout/app_bar_main">
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/article_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    </android.support.v7.widget.RecyclerView>
+
+    <TextView
+        android:id="@+id/no_network"
+        android:drawableTop="@drawable/no_network"
+        android:text="@string/no_network_connection"
+        style="@style/ErrorTextStyle"/>
+
+    <TextView
+        android:id="@+id/no_articles"
+        android:drawableTop="@drawable/no_articles"
+        android:text="@string/no_results"
+        style="@style/ErrorTextStyle"/>
+</LinearLayout>

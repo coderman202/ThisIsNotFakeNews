@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:tools="http://schemas.android.com/tools">
+
+    <item android:title="@string/title_region">
+        <menu>
+            <group android:checkableBehavior="single">
+                <item
+                    android:id="@+id/nav_world"
+                    android:title="@string/title_world"/>
+                <item
+                    android:id="@+id/nav_europe"
+                    android:title="@string/title_europe"/>
+                <item
+                    android:id="@+id/nav_uk"
+                    android:title="@string/title_uk"/>
+                <item
+                    android:id="@+id/nav_us"
+                    android:title="@string/title_us"/>
+                <item
+                    android:id="@+id/nav_asia"
+                    android:title="@string/title_asia"/>
+                <item
+                    android:id="@+id/nav_africa"
+                    android:title="@string/title_africa"/>
+                <item
+                    android:id="@+id/nav_middle_east"
+                    android:title="@string/title_middle_east"/>
+                <item
+                    android:id="@+id/nav_south_america"
+                    android:title="@string/title_south_america"/>
+            </group>
+        </menu>
+    </item>
+
+    <item android:title="@string/title_sport">
+        <menu>
+            <group android:checkableBehavior="single">
+                <item
+                    android:id="@+id/nav_football"
+                    android:title="@string/title_football"/>
+                <item
+                    android:id="@+id/nav_tennis"
+                    android:title="@string/title_tennis"/>
+                <item
+                    android:id="@+id/nav_sport"
+                    android:title="@string/title_sport"/>
+            </group>
+        </menu>
+    </item>
+
+    <item android:title="@string/title_finance">
+        <menu>
+            <group android:checkableBehavior="single">
+                <item
+                    android:id="@+id/nav_business"
+                    android:title="@string/title_business"/>
+                <item
+                    android:id="@+id/nav_money"
+                    android:title="@string/title_money"/>
+            </group>
+        </menu>
+    </item>
+
+    <item android:title="@string/title_sci_tech">
+        <menu>
+            <group android:checkableBehavior="single">
+                <item
+                    android:id="@+id/nav_science"
+                    android:title="@string/title_science"/>
+                <item
+                    android:id="@+id/nav_technology"
+                    android:title="@string/title_technology"/>
+            </group>
+        </menu>
+    </item>
+
+    <item android:title="@string/title_climate">
+        <menu>
+            <group android:checkableBehavior="single">
+                <item
+                    android:id="@+id/nav_energy"
+                    android:title="@string/title_energy"/>
+                <item
+                    android:id="@+id/nav_environment"
+                    android:title="@string/title_environment"/>
+            </group>
+        </menu>
+    </item>
+
+    <item android:title="@string/title_health_lifestyle">
+        <menu>
+            <group android:checkableBehavior="single">
+                <item
+                    android:id="@+id/nav_health"
+                    android:title="@string/title_health"/>
+                <item
+                    android:id="@+id/nav_fashion"
+                    android:title="@string/title_fashion"/>
+                <item
+                    android:id="@+id/nav_lifestyle"
+                    android:title="@string/title_lifestyle"/>
+                <item
+                    android:id="@+id/nav_travel"
+                    android:title="@string/title_travel"/>
+                <item
+                    android:id="@+id/nav_culture"
+                    android:title="@string/title_culture"/>
+            </group>
+        </menu>
+    </item>
+
+    <item android:title="@string/title_other">
+        <menu>
+            <group android:checkableBehavior="single">
+                <item
+                    android:id="@+id/nav_opinion"
+                    android:title="@string/title_opinion"/>
+                <item
+                    android:id="@+id/nav_the_observer"
+                    android:title="@string/title_the_observer"/>
+            </group>
+        </menu>
+    </item>
+
+</menu>
