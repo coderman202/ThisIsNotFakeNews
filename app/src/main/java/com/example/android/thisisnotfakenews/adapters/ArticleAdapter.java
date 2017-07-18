@@ -34,6 +34,8 @@ public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.ViewHold
         @BindView(R.id.article_author) TextView authorView;
         @BindView(R.id.article_date) TextView dateView;
         @BindView(R.id.read_more_button) TextView readMoreButton;
+        @BindView(R.id.article_section)
+        TextView sectionView;
 
         public ViewHolder(View view){
             super(view);
@@ -77,11 +79,13 @@ public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.ViewHold
         String subtitle = article.getSubtitle();
         String author = article.getAuthor();
         String date = article.getDate();
+        String section = article.getSectionName();
 
         holder.titleView.setText(title);
         holder.subtitleView.setText(subtitle);
         holder.authorView.setText(author);
         holder.dateView.setText(date);
+        holder.sectionView.setText(section);
 
         holder.readMoreButton.setOnClickListener(new View.OnClickListener() {
             @Override

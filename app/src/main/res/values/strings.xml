@@ -84,6 +84,7 @@
         <xliff:g name="search_term" example="Birdwatching">%s</xliff:g>.\nTry a different search.
     </string>
     <string name="empty_search">Enter a search term or choose one of the topics below.</string>
+    <string name="placeholder_section">Sports</string>
 
 
 </resources>
