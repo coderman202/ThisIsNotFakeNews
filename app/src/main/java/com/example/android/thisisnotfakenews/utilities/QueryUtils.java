@@ -75,7 +75,6 @@ public class QueryUtils {
 
         // Getting the list of {@link Article}
         List<Article> articleList = extractDetailsFromJSON(jsonResponse);
-        Log.d(LOG_TAG, jsonResponse);
 
         try {
             Thread.sleep(SLEEP_MILLIS);
@@ -143,7 +142,6 @@ public class QueryUtils {
                 inputStream.close();
             }
         }
-        Log.e(LOG_TAG, jsonResponse);
         return jsonResponse;
     }
 

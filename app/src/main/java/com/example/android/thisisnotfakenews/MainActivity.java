@@ -1,14 +1,14 @@
 package com.example.android.thisisnotfakenews;
 
-import android.app.Activity;
-import android.app.LoaderManager;
 import android.content.Context;
-import android.content.Loader;
 import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.Loader;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -16,15 +16,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.view.LayoutInflater;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
-import android.widget.EditText;
-import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.android.thisisnotfakenews.adapters.ArticleAdapter;
 import com.example.android.thisisnotfakenews.loaders.NewsLoader;
@@ -50,6 +45,8 @@ public class MainActivity extends AppCompatActivity
 
     private static final int NEWS_LOADER_ID = 1;
 
+    private static final String FULL_URL_KEY = "Full Request Url";
+
     // The base request URL.
     private static final String NEWS_REQUEST_URL_SEARCH =
             "http://content.guardianapis.com/search?order-by=newest&show-fields=all&q=";
@@ -63,6 +60,12 @@ public class MainActivity extends AppCompatActivity
     // with the search term.
     private String httpRequestUrl;
 
+    // String to hold the subtitle of the toolbar.
+    private String toolbarSubtitle;
+
+    // Key for the subtitle for use just on save instance state.
+    private static final String SUBTITLE_KEY = "Subtitle";
+
     private ArticleAdapter adapter;
 
     private List<Article> articleList = new ArrayList();
@@ -75,10 +78,17 @@ public class MainActivity extends AppCompatActivity
     @BindView(R.id.no_articles) TextView noArticleView;
     @BindView(R.id.no_network) TextView noNetworkView;
 
-    // The edit text for the user to enter a search term and find any articles matching that term.
-    // And the button for completing the search.
-    EditText articleSearchEditText;
-    ImageView searchButton;
+    // ProgressBar for displaying the loading progress.
+    @BindView(R.id.progress)
+    ProgressBar progressBar;
+
+    LoaderManager loaderManager;
+
+    // For handling the RecyclerView layout.
+    LinearLayoutManager layoutManager;
+
+    // Key for saving the scroll position of the RecyclerView.
+    public static final String BUNDLE_RECYCLER_LAYOUT_KEY = "RecyclerView Layout";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,27 +97,47 @@ public class MainActivity extends AppCompatActivity
 
         ButterKnife.bind(this);
 
-        final LayoutInflater factory = getLayoutInflater();
-        final View navHeaderLayout = factory.inflate(R.layout.nav_header_main, null);
-
-        articleSearchEditText = navHeaderLayout.findViewById(R.id.article_search);
-        searchButton = navHeaderLayout.findViewById(R.id.search_button);
-
         setSupportActionBar(toolbar);
-        getSupportActionBar().setSubtitle(getString(R.string.action_bar_subtitle));
+
+        loaderManager = getSupportLoaderManager();
+
+        layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
 
         initNavDrawer();
 
-        /*searchButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                enterSearch();
-            }
-        });*/
+        if(savedInstanceState != null){
+            httpRequestUrl = savedInstanceState.getString(FULL_URL_KEY);
+            initNetworkConnectivityCheck();
+            initArticleAdapter();
+            toolbarSubtitle = savedInstanceState.getString(SUBTITLE_KEY);
+            Parcelable savedRecyclerLayoutState = savedInstanceState.getParcelable(BUNDLE_RECYCLER_LAYOUT_KEY);
+            layoutManager.onRestoreInstanceState(savedRecyclerLayoutState);
+        }
+        else{
+            toolbarSubtitle = getString(R.string.action_bar_subtitle);
 
-        initArticleAdapter();
 
-        loadArticles();
+            initArticleAdapter();
+
+            loadArticles();
+        }
+
+        getSupportActionBar().setSubtitle(toolbarSubtitle);
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        outState.putString(FULL_URL_KEY, httpRequestUrl);
+        outState.putString(SUBTITLE_KEY, toolbarSubtitle);
+        outState.putParcelable(BUNDLE_RECYCLER_LAYOUT_KEY, layoutManager.onSaveInstanceState());
+    }
+
+    @Override
+    public void onRestoreInstanceState(Bundle inState) {
+        httpRequestUrl = inState.getString(FULL_URL_KEY);
+        toolbarSubtitle = inState.getString(SUBTITLE_KEY);
+        Parcelable savedRecyclerLayoutState = inState.getParcelable(BUNDLE_RECYCLER_LAYOUT_KEY);
+        layoutManager.onRestoreInstanceState(savedRecyclerLayoutState);
     }
 
     /**
@@ -120,11 +150,11 @@ public class MainActivity extends AppCompatActivity
         NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
         if (networkInfo != null && networkInfo.isConnected()) {
             noNetworkView.setVisibility(View.GONE);
-            // Get a reference to the LoaderManager, in order to interact with loaders.
-            LoaderManager loaderManager = getLoaderManager();
-            loaderManager.initLoader(NEWS_LOADER_ID, null, this);
+            articleListView.setVisibility(View.VISIBLE);
+            loaderManager.restartLoader(NEWS_LOADER_ID, null, this);
         } else {
             // If there is no network info, tell the user
+            articleListView.setVisibility(View.GONE);
             noNetworkView.setVisibility(View.VISIBLE);
         }
     }
@@ -136,9 +166,7 @@ public class MainActivity extends AppCompatActivity
         adapter.clear();
         httpRequestUrl = prepareRequestUrl();
         initNetworkConnectivityCheck();
-        getLoaderManager().restartLoader(NEWS_LOADER_ID, null, this);
         initArticleAdapter();
-        checkForEmptyList();
     }
 
     /**
@@ -147,7 +175,6 @@ public class MainActivity extends AppCompatActivity
      */
     private void initArticleAdapter() {
         adapter = new ArticleAdapter(this, articleList);
-        LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         articleListView.setLayoutManager(layoutManager);
         articleListView.addItemDecoration(new HorizontalDividerItemDecoration.Builder(this).
                 color(Color.LTGRAY).sizeResId(R.dimen.quiz_list_item_divider_width).
@@ -155,26 +182,15 @@ public class MainActivity extends AppCompatActivity
         articleListView.setAdapter(adapter);
     }
 
-    private void checkForEmptyList(){
-        if(adapter.getItemCount() == 0){
-            noArticleView.setVisibility(View.VISIBLE);
-        }else{
-            noArticleView.setVisibility(View.GONE);
-        }
-    }
-
     /**
-     * Method to be called after the user has entered a search term
+     * This method prepares the request used to fetch data from Google API
+     * @return search query
      */
-    private void enterSearch() {
-        searchTerm = articleSearchEditText.getText().toString();
-        if(!searchTerm.equals("")){
-            hideKeyboard(this);
-            loadArticles();
-        }
-        else{
-            Toast.makeText(this, R.string.empty_search, Toast.LENGTH_LONG).show();
-        }
+    public String prepareRequestUrl() {
+        String requestUrl = NEWS_REQUEST_URL_SEARCH;
+        requestUrl += searchTerm;
+        requestUrl += "&" + API_KEY;
+        return (requestUrl);
     }
 
     //region Navigation Drawer Methods
@@ -210,34 +226,28 @@ public class MainActivity extends AppCompatActivity
     public boolean onNavigationItemSelected(MenuItem item) {
 
         searchTerm = item.getTitle().toString().toLowerCase().replace(" ", "%20");
-        getSupportActionBar().setSubtitle(item.getTitle());
+        toolbarSubtitle = item.getTitle().toString();
+        getSupportActionBar().setSubtitle(toolbarSubtitle);
         loadArticles();
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
     //endregion
 
-    /**
-     * This method prepares the request used to fetch data from Google API
-     * @return search query
-     */
-    public String prepareRequestUrl() {
-        String requestUrl = NEWS_REQUEST_URL_SEARCH;
-        requestUrl += searchTerm;
-        requestUrl += "&" + API_KEY;
-        return (requestUrl);
-    }
-
     //region Loader methods
     @Override
     public Loader<List<Article>> onCreateLoader(int i, Bundle bundle) {
+        articleListView.setVisibility(View.GONE);
+        progressBar.setVisibility(View.VISIBLE);
         return new NewsLoader(this, httpRequestUrl);
     }
 
     @Override
     public void onLoadFinished(Loader<List<Article>> loader, List<Article> articleList) {
+        articleListView.setVisibility(View.VISIBLE);
+        progressBar.setVisibility(View.GONE);
+        adapter.clear();
         // filling ArticleAdapter
         if (articleList != null && !articleList.isEmpty()) {
             adapter.reloadList(articleList);
@@ -248,34 +258,6 @@ public class MainActivity extends AppCompatActivity
     public void onLoaderReset(Loader<List<Article>> loader) {
         adapter.clear();
         adapter.notifyDataSetChanged();
-    }
-    //endregion
-
-    //region Methods to handle the hiding of the keyboard.
-    @Override
-    public boolean dispatchTouchEvent(MotionEvent ev) {
-        View v = getCurrentFocus();
-
-        if (v != null &&
-                (ev.getAction() == MotionEvent.ACTION_UP || ev.getAction() == MotionEvent.ACTION_MOVE) &&
-                v instanceof EditText &&
-                !v.getClass().getName().startsWith(APP_PACKAGE_NAME)) {
-            int scrcoords[] = new int[2];
-            v.getLocationOnScreen(scrcoords);
-            float x = ev.getRawX() + v.getLeft() - scrcoords[0];
-            float y = ev.getRawY() + v.getTop() - scrcoords[1];
-
-            if (x < v.getLeft() || x > v.getRight() || y < v.getTop() || y > v.getBottom())
-                hideKeyboard(this);
-        }
-        return super.dispatchTouchEvent(ev);
-    }
-
-    public static void hideKeyboard(Activity activity) {
-        if (activity != null && activity.getWindow() != null && activity.getWindow().getDecorView() != null) {
-            InputMethodManager imm = (InputMethodManager)activity.getSystemService(Context.INPUT_METHOD_SERVICE);
-            imm.hideSoftInputFromWindow(activity.getWindow().getDecorView().getWindowToken(), 0);
-        }
     }
     //endregion
 }

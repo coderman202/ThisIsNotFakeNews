@@ -4,7 +4,7 @@
 
     <!--NAV DRAWER DIMENS-->
     <dimen name="nav_header_vertical_spacing">16dp</dimen>
-    <dimen name="nav_header_height">160dp</dimen>
+    <dimen name="nav_header_height">120dp</dimen>
     <dimen name="nav_header_divider">2dp</dimen>
     <dimen name="submit_button_padding_left">60dp</dimen>
     <dimen name="submit_button_padding_right">16dp</dimen>

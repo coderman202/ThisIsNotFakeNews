@@ -13,28 +13,9 @@
     <TextView
         android:id="@+id/nav_bar_instructions"
         android:layout_alignParentStart="true"
-        android:layout_above="@+id/article_search"
+        android:layout_centerInParent="true"
         android:text="@string/nav_bar_instructions"
         style="@style/NavBarHeaderStyle"/>
-
-    <EditText
-        android:id="@+id/article_search"
-        android:hint="@string/search_here"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentStart="true"
-        android:layout_toStartOf="@+id/submit_button"
-        style="@style/NavBarHeaderEditTextStyle"/>
-
-    <ImageView
-        android:id="@+id/submit_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true"
-        android:paddingStart="@dimen/submit_button_padding_left"
-        android:paddingEnd="@dimen/submit_button_padding_right"
-        android:src="@drawable/submit"
-        android:contentDescription="@string/submit_button"/>
 
     <View
         android:layout_width="match_parent"

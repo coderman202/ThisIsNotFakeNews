@@ -1,5 +1,6 @@
 <resources xmlns:tools="http://schemas.android.com/tools"
            xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+
     <string name="app_name">This Is Not Fake News</string>
     <string name="action_bar_title">@string/app_name</string>
     <string name="action_bar_subtitle">Latest World News</string>
@@ -12,10 +13,10 @@
     <string name="author">
         by <xliff:g name="author_name" example="John Johnson">%s</xliff:g>
     </string>
-    <string name="read_more">Read More...</string>
+    <string name="read_more">Read More&#8230;</string>
 
     <!--TOPICS LIST FOR THE NAV BAR TITLES-->
-    <string name="nav_bar_instructions">Browse The Guardian by topics or search below.</string>
+    <string name="nav_bar_instructions">Browse The Guardian by topics below.</string>
     <string name="search_here">Search Here</string>
 
     <string name="title_region">Region</string>
@@ -84,7 +85,5 @@
     </string>
     <string name="empty_search">Enter a search term or choose one of the topics below.</string>
 
-    <!--CONTENT DESCRIPTION STRINGS-->
-    <string name="submit_button">Press this button to submit your search query</string>
 
 </resources>
