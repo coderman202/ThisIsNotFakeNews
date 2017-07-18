@@ -82,6 +82,7 @@ public class MainActivity extends AppCompatActivity
     @BindView(R.id.progress)
     ProgressBar progressBar;
 
+    // Loader manager for handling the loader(s)
     LoaderManager loaderManager;
 
     // For handling the RecyclerView layout.
