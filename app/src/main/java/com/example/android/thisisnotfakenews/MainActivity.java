@@ -107,7 +107,6 @@ public class MainActivity extends AppCompatActivity
 
         if(savedInstanceState != null){
             httpRequestUrl = savedInstanceState.getString(FULL_URL_KEY);
-            initNetworkConnectivityCheck();
             initArticleAdapter();
             toolbarSubtitle = savedInstanceState.getString(SUBTITLE_KEY);
             Parcelable savedRecyclerLayoutState = savedInstanceState.getParcelable(BUNDLE_RECYCLER_LAYOUT_KEY);
@@ -116,11 +115,10 @@ public class MainActivity extends AppCompatActivity
         else{
             toolbarSubtitle = getString(R.string.action_bar_subtitle);
 
-
             initArticleAdapter();
-
-            loadArticles();
         }
+
+        loadArticles();
 
         getSupportActionBar().setSubtitle(toolbarSubtitle);
     }
